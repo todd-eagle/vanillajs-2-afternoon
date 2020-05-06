@@ -53,104 +53,7 @@ In this step, we'll make our data appear on the page. To dynamically add content
   * Write a function called `render`.
   * In `render`, let's build some html.
     * Declare a variable called `html`.
-    * Set `html` equal to the result of mapping over our characters array and returning a template string that contains an opening and closing `li` tag, then joining the returned strings.
-    * Between the `li` tags, interpolate (${}) the name of our character.
-    * Your code should look like this.
-      <details>
-      <summary><code> html </code></summary>
-      ```js
-        function render() {
-          const html = characters.map(val => `<li>${val.name}</li>`).join('')
-        }
-      ```
-      </details>
-    * We can now render that content to the DOM by targeting the `innerHTML` of our `list` and setting its value to our html.
-    * Invoke render in the `.then` after we push our characters into our array.
-
-### Solution
-
-<details>
-
-<summary> <code> ./index.html </code> </summary>
-
-```js
-const characters = [];
-const list = document.getElementById('list');
-
-fetch('https://www.swapi.co/api/people')
-    .then(response => response.json())
-    .then(response => {
-      characters.push(...response.results);
-      render();
-    })
-
-function render() {
-  const html = characters.map(val => `<li>${val.name}</li>`).join('');
-  list.innerHTML = html;
-}
-
-```
-
-</details>
-
-## Step 3
-
-### Summary
-
-We can now see data on the view, but it's not very dynamic. Let's get our typeahead working.
-
-### Instructions
-
-* Open `index.html`.
-* Declare a variable called `search` beneath our `list` variable who's value is our `input` element.
-* Now that we have access to the input, we need a way to access the value we type into it.
-  * Write a function called `filterText`.
-    * When we attach this method to our input, we'll gain access to a property called `this.value` where `this` is bound to our input. So, `this.value` would be the value of our keypress.
-    * In our `filterText` function, declare a variable called filtered.
-      * First we want to filter through our `characters` array to search each name for the character that has been typed in. (Hint: Normalize the characters by making both the value and term lowercase.)
-      * We can then grab our map from the previous step and chain it to our filter to build the HTML we want to show. (Remove the join method, we'll use that later.)
-    * Next, add a condtional to check that our `filtered` has at least one value.
-      * If it does, invoke the render method passing in our `filtered` array.
-    * Adjust the `render` method so that it now receives one argument, an array.
-      * Our `html` variable should join the passed in array.
-      * Remove the `render` invocation from the `.then` above.
-    * Finally, we need to utilize our `filterText` method.
-      * We'll add an `eventListener` that will tell our input to listen for an event to occur.
-      * For more information on available events, look <a href="https://developer.mozilla.org/en-US/docs/Web/Events">here.</a>
-      * At the bottom of our `script` add a `keyup eventListener` to our `search` Node that will execute our `filterText` method.
-        * When we type into our typeahead, on each `keyup` our `filterText` method will be reinvoked.
-
-### Solution
-
-<details>
-
-<summary> <code> ./index.html </code> </summary>
-
-```js
-const characters = [];
-const list = document.getElementById('list');
-const search = document.querySelector('input');
-
-fetch('https://www.swapi.co/api/people')
-    .then(response => response.json())
-    .then(response => characters.push(...response.results))
-
-function filterText() {
-    const filtered = characters
-        .filter(val => val.name.toLowerCase().includes(this.value.toLowerCase()))
-        .map(val => `<li>${val.name}</li>`)
-
-    if (filtered.length) {
-        render(filtered)
-    }
-}
-
-function render(array) {
-    const html = array.join('');
-    list.innerHTML = html;
-}
-
-search.addEventListener('keyup', filterText);
+    * Set `html` equal to the result of mapping over our characters array and returning a     
 
 
 ```
@@ -166,7 +69,7 @@ There are a few ways we can improve our typeahead.
   4. Create a container that will hold `selected` elements. So that when you click on a name, it adds that name to another list.
   5. Once you can add the name, make it so you can only add the name once.
 
-  A completed and fully functional version can be found on the soultion branch.
+  A completed and fully functional version can be found on the solution branch.
 
 ## Contributions
 
